@@ -1,0 +1,14 @@
+program: "Demo Program (Live Sandbox)"
+in_scope:
+  - "httpbin.org"
+  - "*.httpbin.org"
+  - "example.com"
+out_of_scope:
+  - "status.example.com"
+rate_limit:
+  requests_per_second: 2
+  burst: 5
+ai:
+  model: "gpt-4o-mini"          # or any model your endpoint serves
+  max_tokens: 1024
+
