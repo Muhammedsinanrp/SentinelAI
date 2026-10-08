@@ -8,9 +8,10 @@ from cyberfusion.app.api.phishing import router as phishing_router
 from cyberfusion.app.api.ransomware import router as ransomware_router
 from cyberfusion.app.api.threat_intel import router as intel_router
 from cyberfusion.app.api.ai_analyst import router as ai_router
+from cyberfusion.app.api.pentest_tools import router as pentest_tools_router
 
 __all__ = [
     "dashboard_router", "asm_router", "siem_router", "cspm_router",
     "identity_router", "apisec_router", "phishing_router", "ransomware_router",
-    "intel_router", "ai_router"
+    "intel_router", "ai_router", "pentest_tools_router"
 ]

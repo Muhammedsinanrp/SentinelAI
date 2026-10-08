@@ -17,7 +17,8 @@ from cyberfusion.app.api import (
     phishing_router,
     ransomware_router,
     intel_router,
-    ai_router
+    ai_router,
+    pentest_tools_router
 )
 
 STATIC_DIR = Path(__file__).parent / "static"
@@ -30,7 +31,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version=settings.version,
-    description="Unified AI-Powered Enterprise Cyber Defense Platform",
+    description="Unified AI-Powered Enterprise Cyber Defense Platform & Bug Hunting Suite",
     lifespan=lifespan
 )
 
@@ -42,7 +43,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount all 10 API Routers
+# Mount all 11 API Routers
 app.include_router(dashboard_router)
 app.include_router(asm_router)
 app.include_router(siem_router)
@@ -53,6 +54,7 @@ app.include_router(phishing_router)
 app.include_router(ransomware_router)
 app.include_router(intel_router)
 app.include_router(ai_router)
+app.include_router(pentest_tools_router)
 
 # Mount Static UI
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -67,15 +69,5 @@ async def health_check():
         "status": "online",
         "platform": settings.app_name,
         "version": settings.version,
-        "modules": [
-            "Attack Surface Management",
-            "Enterprise SOC / SIEM",
-            "Cloud Security (CSPM)",
-            "Identity & IAM Threat Detection",
-            "API Security",
-            "Phishing Defense & Response",
-            "Ransomware Behavioral Detection",
-            "Threat Intelligence",
-            "AI Security Analyst"
-        ]
+        "pentest_tools": ["Nmap", "Caido", "Nuclei", "Subfinder", "Httpx", "FFUF"]
     }
