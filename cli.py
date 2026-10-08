@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-CYBERSHIELD X Entry Point
+CYBERFUSION X Root Entry Point
 """
-from cybershield.cli import cli
+from cyberfusion.cli import cli
 
 if __name__ == "__main__":
     cli()

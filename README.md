@@ -1,232 +1,212 @@
-# 🛡️ CYBERSHIELD X — AI-Assisted SOC & Attack Surface Management
+# 🛡️ CYBERFUSION X — Unified AI Enterprise Cyber Defense Platform
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python)](https://python.org)
 [![MITRE ATT&CK](https://img.shields.io/badge/Threat%20Intel-MITRE%20ATT%26CK-E65100)](https://attack.mitre.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-> **Enterprise-grade, AI-powered Security Operations Center (SOC) & Attack Surface Management (ASM) Platform.**  
-> Fuses continuous attack surface discovery, unified vulnerability intelligence, real-time SIEM log correlation, and an autonomous AI Tier-3 Incident Response Commander.
+> **One unified enterprise cyber defense platform connecting Attack Surface, SOC/SIEM, Cloud (CSPM), Identity (UEBA), API Security, Phishing Defense, Ransomware Behavioral Detection & Threat Intelligence.**
 
 ---
 
 ## 📐 Architecture Blueprint
 
 ```
-                         CYBERSHIELD X
+                         CYBERFUSION X
+                  AI Enterprise Cyber Defense
                                │
-                   ┌───────────▼───────────┐
-                   │   Security Dashboard  │
-                   └───────────┬───────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
-         Asset Discovery   Vulnerability     SIEM / SOC
-              │             Management          │
-              │                │                │
-         ┌────▼────┐      ┌────▼────┐      ┌────▼────┐
-         │Subdomain│      │ Nuclei  │      │  Logs   │
-         │DNS      │      │ Nmap    │      │ Syslog  │
-         │Cloud    │      │ CVEs    │      │ Wazuh   │
-         │Web      │      │ OWASP   │      │ Windows │
-         └─────────┘      └─────────┘      └─────────┘
-                               │                │
-                               └───────┬────────┘
-                                       ▼
-                               ┌──────────────┐
-                               │  AI ANALYST  │
-                               │              │
-                               │ Correlation  │
-                               │ Risk scoring │
-                               │ Investigation│
-                               │ Remediation  │
-                               └──────┬───────┘
-                                      ▼
-                               ┌──────────────┐
-                               │ Reports      │
-                               │ Alerts       │
-                               │ Tickets      │
-                               └──────────────┘
+             ┌─────────────────┼─────────────────┐
+             │                 │                 │
+             ▼                 ▼                 ▼
+       ATTACK SURFACE       SOC / SIEM      CLOUD SECURITY
+         MANAGEMENT         OPERATIONS          (CSPM)
+             │                 │                 │
+       ┌─────┼─────┐     ┌─────┼─────┐     ┌─────┼─────┐
+      DNS   Web  Assets Logs Alerts Incidents AWS Azure GCP
+       │     │     │     │     │     │     │     │     │
+       └─────┼─────┘     └─────┼─────┘     └─────┼─────┘
+             │                 │                 │
+             └────────┬────────┴────────┬────────┘
+                      │                 │
+                      ▼                 ▼
+             ┌─────────────────┐  ┌─────────────────┐
+             │  VULNERABILITY  │  │ IDENTITY & IAM  │
+             │   MANAGEMENT    │  │ THREAT DETECTION│
+             └────────┬────────┘  └────────┬────────┘
+                      │                    │
+                      └──────────┬─────────┘
+                                 ▼
+                     ┌───────────────────────┐
+                     │   THREAT INTELLIGENCE │
+                     │   IOC / CVE / TTP     │
+                     └───────────┬───────────┘
+                                 │
+             ┌───────────────────┼───────────────────┐
+             ▼                   ▼                   ▼
+      PHISHING DEFENSE      API SECURITY         RANSOMWARE
+      ├─ Email analysis     ├─ API discovery     ├─ File monitoring
+      ├─ URL analysis       ├─ Auth testing      ├─ Behavior detection
+      ├─ Domain analysis    ├─ Abuse detection   ├─ Process analysis
+      └─ Risk scoring       └─ API risk score    └─ Host isolation
+                                 │
+                                 ▼
+                     ┌──────────────────────┐
+                     │     AI SECURITY      │
+                     │       ANALYST        │
+                     ├──────────────────────┤
+                     │ Detection            │
+                     │ Cross-Correlation    │
+                     │ Investigation        │
+                     │ Threat Hunting       │
+                     │ Remediation          │
+                     └──────────┬───────────┘
+                                │
+                    ┌───────────┴───────────┐
+                    ▼                       ▼
+             INCIDENT RESPONSE          REPORTING
+             ├─ Timeline                ├─ Technical
+             ├─ Containment             ├─ Executive
+             └─ Recovery                └─ Compliance
 ```
 
 ---
 
-## 🔥 Core Modules
+## 🔥 The 7 Core Defense Modules
 
 ### 1. 🌐 Attack Surface Management (ASM)
-- **Authorized Domain Discovery**: Enter an authorized company domain (`example.com`).
-- Discovers subdomains (`api.example.com`, `dev.example.com`, `vpn.example.com`, `mail.example.com`) via DNS, CRT.sh Certificate Transparency, and async brute-force.
-- Probes and maps:
-  - IP addresses & reverse DNS
-  - Full DNS record matrix (`A`, `AAAA`, `MX`, `TXT`, `NS`, `CNAME`)
-  - Open port discovery & banner grabbing
-  - Technology stack identification (Server, Framework, CMS, CDN)
-  - TLS / SSL Certificate health & expiration
-  - Security headers audit (HSTS, CSP, X-Frame-Options, etc.)
+- Continuous asset discovery: Domains &rarr; Subdomains &rarr; IP addresses &rarr; Ports &rarr; Technologies &rarr; Cloud assets &rarr; Exposed services.
+- Multi-vector discovery: DNS enumeration, CRT.sh Certificate Transparency, async TCP connect scanning.
 
-### 2. 🛡️ Unified Vulnerability Management
-- Normalizes findings from **Nuclei**, **Nmap NSE**, **OWASP Top 10**, and custom audit rules into a single database schema.
-- Automatic **CVSS v3.1** calculation and organizational risk scoring.
-- Comprehensive finding cards:
-  - **Asset Target**: `api.example.com`
-  - **Finding**: SQL Injection in Authentication Endpoint
-  - **CVSS**: `9.8` (CRITICAL)
-  - **Evidence**: Payload reproduction and response proof
-  - **Business Impact**: Unauthorized database access, tenant data exfiltration
-  - **Remediation**: Use parameterized queries and ORM prepared statements
-
-### 3. 🚨 Real SOC / SIEM Telemetry & Correlation
-- Collects and normalizes logs from:
-  - **Linux** (`/var/log/auth.log`, `secure`, `sudo`)
-  - **Windows** Security Events (Event ID 4625 Failed Logon, 4624 Successful Logon, 4672 Special Privileges, 4688 Process Creation)
-  - **Web Servers** (Nginx / Apache access logs with SQLi & Path Traversal detection)
-  - **Wazuh** EDR & Syslog RFC 5424
-- Built-in multi-stage correlation engine detects attack chains:
+### 2. 🚨 Enterprise SOC / SIEM
+- Centralized log ingestion: Linux, Windows, Syslog, Wazuh alerts, Web access logs, CloudTrail.
+- Sigma-inspired rule engine detecting multi-stage intrusions:
   ```
-  Brute Force  ──>  Multiple Failed Logins  ──>  Same Source IP
-        │
-        └──>  Successful Login  ──>  Privilege Escalation  ──>  CRITICAL ALERT
+  Brute Force ──> Multiple Failed Logins ──> Same IP ──> Successful Login ──> Privilege Escalation ──> High Severity Alert
   ```
 
-### 4. 🧠 Autonomous AI Security Analyst
-- Cross-correlates asset context, known vulnerabilities, and live SIEM logs.
-- Produces a complete Incident Response Dossier:
-  - **Root Cause Analysis**
-  - **MITRE ATT&CK Technique Mapping**
-  - **Immediate Containment Actions** (firewall blocks, session kills, account freezes)
-  - **Eradication & Long-Term Hardening Playbook**
-- **Offline Resilient**: Works out-of-the-box using the built-in Heuristic SOC Reasoning Engine, and seamlessly connects to any OpenAI / DeepSeek / Anthropic / Ollama endpoint when `AI_API_KEY` is provided!
+### 3. ☁️ Cloud Security Posture Management (CSPM)
+- Audits AWS, Azure, and GCP accounts against CIS Cloud Benchmarks:
+  - Public S3 storage buckets
+  - Inbound SSH (Port 22) open to `0.0.0.0/0`
+  - Root account missing Multi-Factor Authentication (MFA)
+  - Unencrypted EBS volumes & disabled CloudTrail
 
-### ⏱️ The Signature Feature: Attack Timeline
-Reconstructs the full chronological kill-chain step-by-step:
+### 4. 👤 Identity & IAM Threat Detection (UEBA)
+- Behavior analytics engine monitoring logins across location, device, IP reputation, and velocity:
+  - **Impossible Travel Detection**: Flags authentications when calculated velocity exceeds 800 km/h (e.g. India &rarr; Russia in 20 minutes).
+  - Anomalous off-hours login windows (03:00) & unfamiliar device fingerprints.
+
+### 5. 🔌 API Security
+- Discovers and monitors API inventories (`/api/login`, `/api/users`, `/api/orders`, `/api/admin`).
+- Audits against OWASP API Top 10:
+  - Broken Object Level Authorization (BOLA)
+  - Broken Authentication & lack of rate-limiting
+  - Broken Function Level Authorization & Excessive Data Exposure
+
+### 6. 🎣 Phishing Detection & Response
+- Analyzes submitted emails, URLs, and domains using multi-factor scoring:
+  - URL lure patterns & credential harvesting signatures
+  - Domain age & high-risk abuse TLD detection (`.xyz`, `.top`, `.tk`)
+  - SPF, DKIM, and DMARC record evaluation
+
+### 7. 🛑 Ransomware Behavioral Detection
+- Safe defensive behavioral telemetry monitoring:
+  - High-frequency file modification tracking (e.g. 1,284 files in 45 seconds = 28.5 files/sec)
+  - Entropy spike detection (> 7.5 indicates cryptographic payload)
+  - **Automated Host Containment**: Immediately isolates compromised endpoints from the corporate network.
+
+---
+
+## 🧠 The Signature Feature: Cross-Domain AI Kill-Chain Correlation
+
+Rather than generating 7 disconnected alerts, **CYBERFUSION X** stitches the entire attack chain together:
+
 ```
-12:01:04  Failed SSH login
-12:01:08  Failed SSH login
-12:01:14  Failed SSH login
-12:02:01  Successful login
-12:03:22  Privilege escalation
-12:04:10  Suspicious command execution
-12:05:32  Outbound C2 connection
-          ──> AI Incident Summary & Remediation Dossier
+1. Phishing Email Click (auth-secure-update.xyz)
+       ↓
+2. Impossible Travel Logon (Moscow, Russia)
+       ↓
+3. Privilege Escalation (Sudo root elevation)
+       ↓
+4. API Data Scraping (BOLA on /api/admin)
+       ↓
+5. Cloud SG Ingress Tampering (sg-prod-db-01)
+       ↓
+6. Mass File Encryption Spike (cryptolocker.exe)
+       ↓
+Unified Incident: Account Takeover & Ransomware Intrusion Chain [CRITICAL]
 ```
 
 ---
 
-## 📊 Interactive Web Dashboard
+## 📊 Enterprise Security Center Dashboard
 
-Launch the sleek, glassmorphic dark-mode cybersecurity command center:
-```bash
-python cli.py serve --port 8888
 ```
-Then navigate to: **[http://localhost:8888](http://localhost:8888)**
-
-Features:
-- **Executive Overview**: Calculated Org Risk Score (0-100), metric cards, severity meters, and recent incident feed.
-- **Attack Surface Explorer**: Scope check input, one-click asset discovery, and service matrix.
-- **Vulnerability Tracker**: Filterable vulnerability findings with CVSS scores, proof, and remediation.
-- **SIEM / SOC Console**: Live log streaming terminal, correlation alert feed, and log injection simulator.
-- **AI Analyst Hub**: Interactive attack timeline builder and executive incident dossiers.
-
----
-
-## 🚀 Quickstart & Installation
-
-### Prerequisites
-- Python 3.10+
-- (Optional) Docker & Docker Compose
-
-### 1. Installation
-```bash
-# Clone the repository
-git clone https://github.com/Muhammedsinanrp/SentinelAI.git
-cd SentinelAI
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 2. Configure Environment Variables (Optional)
-```bash
-# Linux / macOS
-export AI_API_KEY="your-api-key"
-export AI_BASE_URL="https://api.openai.com/v1"   # or local Ollama / vLLM
-export AI_MODEL="gpt-4o-mini"
-
-# Windows PowerShell
-$env:AI_API_KEY = "your-api-key"
-$env:AI_BASE_URL = "https://api.openai.com/v1"
-$env:AI_MODEL = "gpt-4o-mini"
+╔══════════════════════════════════════════════════════╗
+║                 CYBERFUSION X                        ║
+║          ENTERPRISE SECURITY CENTER                  ║
+╠══════════════════════════════════════════════════════╣
+║                                                      ║
+║ Assets       Critical       Incidents      Risk      ║
+║  1,248          12              8          76/100    ║
+║                                                      ║
+╠══════════════════════════════════════════════════════╣
+║ SECURITY OPERATIONS                                  ║
+║                                                      ║
+║ 🔴 Critical     Ransomware behavior                 ║
+║ 🔴 Critical     Account takeover                    ║
+║ 🟠 High         API authorization issue              ║
+║ 🟠 High         Cloud misconfiguration              ║
+║ 🟡 Medium       Suspicious login                    ║
+║                                                      ║
+╠══════════════════════════════════════════════════════╣
+║ ATTACK SURFACE                                       ║
+║                                                      ║
+║ Domains      Subdomains      APIs       Cloud        ║
+║   12            247           84          391        ║
+╚══════════════════════════════════════════════════════╝
 ```
 
 ---
 
-## 💻 CLI Usage
+## 🚀 Quickstart
 
+### Start the Dashboard
 ```bash
-# Display program scope, rate limits, and system status
+python cli.py serve --port 8899
+```
+Open in browser: **[http://localhost:8899](http://localhost:8899)**  
+Interactive Swagger API docs: **[http://localhost:8899/docs](http://localhost:8899/docs)**
+
+### CLI Commands
+```bash
+# Display enterprise platform status
 python cli.py status
 
-# Verify if a target is authorized under scope policy
-python cli.py check-scope httpbin.org
-python cli.py check-scope status.example.com
+# Verify target authorization
+python cli.py check-scope example.com
 
-# Execute full Attack Surface discovery & vulnerability probes
-python cli.py scan httpbin.org
+# Discover attack surface assets
+python cli.py scan-asm example.com
 
-# Start the Web Command Center
-python cli.py serve --port 8888
+# Audit cloud accounts for misconfigurations
+python cli.py scan-cloud
+
+# Audit API inventory for OWASP API Top 10
+python cli.py audit-api
+
+# Analyze phishing lures
+python cli.py analyze-phishing "https://auth-secure-update.xyz/login"
+
+# Run safe defensive ransomware behavioral simulation
+python cli.py simulate-ransomware
+
+# Run cross-domain threat hunt and AI investigation
+python cli.py threat-hunt
 ```
-
----
-
-## 🐳 Docker Deployment
-
-Run CYBERSHIELD X anywhere with Docker:
-
-```bash
-# Build and run with Docker Compose
-docker compose up -d
-
-# Access the dashboard at http://localhost:8000
-```
-
----
-
-## 📁 Project Structure
-
-```
-.
-├── cli.py                             # Root CLI entry point
-├── scope.yaml                         # Scope policy & program config
-├── requirements.txt                   # Core Python dependencies
-├── Dockerfile                         # Container definition
-├── docker-compose.yml                 # Multi-container orchestration
-└── cybershield/
-    ├── app/
-    │   ├── main.py                    # FastAPI server & static mounting
-    │   ├── config.py                  # Pydantic configuration & env loader
-    │   ├── database.py                # Async SQLite/PostgreSQL engine
-    │   ├── models/                    # Asset, Vulnerability, Log, Alert models
-    │   ├── schemas/                   # Pydantic API schemas
-    │   ├── api/                       # REST endpoints (dashboard, asm, vulns, siem, ai)
-    │   ├── modules/
-    │   │   ├── asm/                   # Subdomain, DNS, TLS, Ports, Scope Gate
-    │   │   ├── vuln/                  # OWASP probes, Nuclei/Nmap normalizer, CVSS
-    │   │   ├── siem/                  # Ingestion, Sigma-like rules, Correlation engine
-    │   │   └── ai_analyst/            # Incident timeline, Context aggregator, LLM analyst
-    │   └── static/                    # Glassmorphism dark-mode Web UI
-    └── cli.py                         # Rich console CLI commands
-```
-
----
-
-## ⚖️ Authorized Testing & Ethics
-
-CYBERSHIELD X enforces strict target authorization via `scope.yaml` to prevent unauthorized activity. This platform is strictly designed for authorized security assessments, defensive monitoring, and SOC training.
 
 ---
 
 ## 📄 License
 
-MIT License © 2026 CYBERSHIELD X
+MIT License © 2026 CYBERFUSION X

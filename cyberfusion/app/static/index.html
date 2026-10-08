@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBERFUSION X — Unified AI Enterprise Cyber Defense Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; }
+    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP HEADER -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 via-blue-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+          <span class="text-xl">🛡️</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">CYBERFUSION X</h1>
+            <span class="badge badge-crit text-[10px]">DEFCON 2</span>
+          </div>
+          <p class="text-xs text-slate-400">Unified AI-Powered Enterprise Cyber Defense &bull; ASM &bull; SOC &bull; Cloud &bull; Identity &bull; API &bull; Ransomware</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="simulateCrossKillchain()" class="btn btn-danger text-xs">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Simulate 7-Vector Attack Chain
+        </button>
+        <button onclick="switchTab('ai')" class="btn btn-primary text-xs">
+          🧠 Launch AI Threat Hunter
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+
+    <!-- METRICS RIBBON (Matches User Plane) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass-card p-4">
+        <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Total Assets</span>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-3xl font-extrabold text-white">1,248</span>
+          <span class="text-xs text-cyan-400 font-mono">Monitored</span>
+        </div>
+      </div>
+
+      <div class="glass-card p-4">
+        <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Critical Threats</span>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-3xl font-extrabold text-red-500">12</span>
+          <span class="badge badge-crit text-[10px]">Action Req.</span>
+        </div>
+      </div>
+
+      <div class="glass-card p-4">
+        <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Active Incidents</span>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-3xl font-extrabold text-amber-400">8</span>
+          <span class="text-xs text-amber-400 font-mono">In Triage</span>
+        </div>
+      </div>
+
+      <div class="glass-card p-4">
+        <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Enterprise Risk Score</span>
+        <div class="flex items-baseline justify-between mt-1">
+          <div class="flex items-baseline gap-1">
+            <span class="text-3xl font-extrabold text-cyan-300">76</span>
+            <span class="text-xs text-slate-400 font-mono">/100</span>
+          </div>
+          <span class="badge badge-high text-[10px]">Elevated</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTACK SURFACE SUMMARY (Matches User Plane) -->
+    <div class="glass-card p-4 flex flex-col md:flex-row justify-between items-center gap-4 border border-cyan-500/20 bg-slate-900/60">
+      <div class="flex items-center gap-2">
+        <span class="text-cyan-400 font-bold text-xs uppercase tracking-wider">🌐 Global Attack Surface Inventory:</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-xs w-full md:w-auto">
+        <div><span class="text-slate-400 block">Domains</span><span class="font-bold text-base text-white">12</span></div>
+        <div><span class="text-slate-400 block">Subdomains</span><span class="font-bold text-base text-cyan-400">247</span></div>
+        <div><span class="text-slate-400 block">APIs</span><span class="font-bold text-base text-amber-400">84</span></div>
+        <div><span class="text-slate-400 block">Cloud Resources</span><span class="font-bold text-base text-emerald-400">391</span></div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS FOR ALL 7 MODULES -->
+    <div class="flex border-b border-slate-800 gap-1 overflow-x-auto text-xs font-semibold">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-3 py-2.5 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-1.5 whitespace-nowrap">
+        <span>📊</span> Security Center
+      </button>
+      <button onclick="switchTab('asm')" id="tab-asm" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>🌐</span> Attack Surface
+      </button>
+      <button onclick="switchTab('siem')" id="tab-siem" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>🚨</span> SOC / SIEM
+      </button>
+      <button onclick="switchTab('cspm')" id="tab-cspm" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>☁️</span> Cloud (CSPM)
+      </button>
+      <button onclick="switchTab('identity')" id="tab-identity" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>👤</span> Identity & IAM
+      </button>
+      <button onclick="switchTab('api')" id="tab-api" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>🔌</span> API Security
+      </button>
+      <button onclick="switchTab('phishing')" id="tab-phishing" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>🎣</span> Phishing Defense
+      </button>
+      <button onclick="switchTab('ransomware')" id="tab-ransomware" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>🛑</span> Ransomware Defense
+      </button>
+      <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-3 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 whitespace-nowrap">
+        <span>🧠</span> AI Security Analyst & Timeline
+      </button>
+    </div>
+
+    <!-- TAB 1: OVERVIEW / SECURITY CENTER (Exact User Plane) -->
+    <section id="panel-overview" class="tab-panel space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Security Operations Active Threats Feed -->
+        <div class="glass-card p-5 lg:col-span-2 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>⚡</span> SECURITY OPERATIONS (Live Threats)
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Autonomous Correlated</span>
+          </div>
+
+          <div id="sec-ops-feed" class="space-y-2.5">
+            <div class="p-3 bg-red-950/20 border border-red-500/40 rounded-lg flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🔴</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-white">Ransomware behavior</span>
+                    <span class="badge badge-crit text-[9px]">CRITICAL</span>
+                  </div>
+                  <p class="text-xs text-slate-400">Target: <code class="text-red-400">workstation-09.corp</code> &bull; 1,284 files/45s &bull; Status: ISOLATED</p>
+                </div>
+              </div>
+              <button onclick="switchTab('ransomware')" class="btn btn-secondary text-xs py-1 px-2.5">View &rarr;</button>
+            </div>
+
+            <div class="p-3 bg-red-950/20 border border-red-500/40 rounded-lg flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🔴</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-white">Account takeover</span>
+                    <span class="badge badge-crit text-[9px]">CRITICAL</span>
+                  </div>
+                  <p class="text-xs text-slate-400">Target: <code class="text-amber-400">admin@company.com</code> &bull; Successful logon after 47 brute-force failures</p>
+                </div>
+              </div>
+              <button onclick="switchTab('identity')" class="btn btn-secondary text-xs py-1 px-2.5">View &rarr;</button>
+            </div>
+
+            <div class="p-3 bg-amber-950/20 border border-amber-500/30 rounded-lg flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🟠</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-white">API authorization issue (BOLA)</span>
+                    <span class="badge badge-high text-[9px]">HIGH</span>
+                  </div>
+                  <p class="text-xs text-slate-400">Endpoint: <code class="text-cyan-400">/api/admin</code> &bull; Broken Object Level Authorization detected</p>
+                </div>
+              </div>
+              <button onclick="switchTab('api')" class="btn btn-secondary text-xs py-1 px-2.5">View &rarr;</button>
+            </div>
+
+            <div class="p-3 bg-amber-950/20 border border-amber-500/30 rounded-lg flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🟠</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-white">Cloud misconfiguration (Public S3)</span>
+                    <span class="badge badge-high text-[9px]">HIGH</span>
+                  </div>
+                  <p class="text-xs text-slate-400">Resource: <code class="text-cyan-400">arn:aws:s3:::prod-customer-data</code> &bull; Open to public internet</p>
+                </div>
+              </div>
+              <button onclick="switchTab('cspm')" class="btn btn-secondary text-xs py-1 px-2.5">View &rarr;</button>
+            </div>
+
+            <div class="p-3 bg-yellow-950/20 border border-yellow-500/30 rounded-lg flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🟡</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-white">Suspicious login (Impossible Travel)</span>
+                    <span class="badge badge-med text-[9px]">MEDIUM</span>
+                  </div>
+                  <p class="text-xs text-slate-400">Source: <code class="text-yellow-400">185.220.101.5 (Russia)</code> &bull; Speed: 4,900 km/h anomaly</p>
+                </div>
+              </div>
+              <button onclick="switchTab('identity')" class="btn btn-secondary text-xs py-1 px-2.5">View &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-Module Architecture Status -->
+        <div class="glass-card p-5 space-y-4">
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span>🛡️</span> 7 Defense Modules Active
+          </h2>
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>1. Attack Surface (ASM)</span>
+              <span class="text-emerald-400 font-mono">Online</span>
+            </div>
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>2. SOC / SIEM Ingestion</span>
+              <span class="text-emerald-400 font-mono">Streaming</span>
+            </div>
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>3. Cloud Security (CSPM)</span>
+              <span class="text-amber-400 font-mono">1 Misconfig</span>
+            </div>
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>4. Identity & IAM Threat</span>
+              <span class="text-red-400 font-mono">Alert Active</span>
+            </div>
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>5. API Security Audit</span>
+              <span class="text-amber-400 font-mono">3 Findings</span>
+            </div>
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>6. Phishing Defense</span>
+              <span class="text-red-400 font-mono">Lure Flagged</span>
+            </div>
+            <div class="p-2.5 bg-slate-900/60 rounded border border-slate-800 flex justify-between items-center">
+              <span>7. Ransomware Detection</span>
+              <span class="text-red-400 font-mono">Host Isolated</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: ATTACK SURFACE MANAGEMENT -->
+    <section id="panel-asm" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>🌐</span> Attack Surface Asset Discovery
+        </h2>
+        <div class="flex flex-col md:flex-row gap-3">
+          <input id="asm-target" type="text" value="example.com" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-xs font-mono text-white">
+          <button onclick="runAsmScan()" class="btn btn-primary text-xs">Discover Subdomains & Ports</button>
+        </div>
+        <div id="asm-assets-list" class="space-y-2 pt-2">
+          <!-- Populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: SOC / SIEM OPERATIONS -->
+    <section id="panel-siem" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>🚨</span> Live SOC Telemetry & Correlation
+        </h2>
+        <div class="code-box h-60" id="siem-terminal">
+          <!-- Real time logs -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: CLOUD SECURITY (CSPM) -->
+    <section id="panel-cspm" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <span>☁️</span> Cloud Security Posture Management (CSPM)
+          </h2>
+          <span class="badge badge-high">Compliance: 74.0%</span>
+        </div>
+        <div id="cspm-findings" class="space-y-3">
+          <!-- Populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: IDENTITY & IAM DEFENSE -->
+    <section id="panel-identity" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>👤</span> Identity & IAM Threat Detection (UEBA)
+        </h2>
+        <div class="p-4 bg-red-950/30 border border-red-500/40 rounded-lg space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-red-300 text-xs">⚠️ IMPOSSIBLE TRAVEL ANOMALY DETECTED</span>
+            <span class="badge badge-crit">RISK: 88/100</span>
+          </div>
+          <p class="text-xs text-slate-300">
+            User <code>admin@company.com</code> authenticated from <strong>Moscow, Russia (185.220.101.5)</strong> 20 minutes after establishing session in <strong>India</strong> (Calculated velocity: 4,900 km/h).
+          </p>
+          <div class="text-[11px] text-slate-400 font-mono">
+            Action: Multi-factor challenge triggered &bull; Session token quarantined
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: API SECURITY -->
+    <section id="panel-api" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>🔌</span> API Security & Inventory
+        </h2>
+        <div id="api-findings-list" class="space-y-3">
+          <!-- Populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 7: PHISHING DEFENSE -->
+    <section id="panel-phishing" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>🎣</span> Phishing Detection & Header Analysis
+        </h2>
+        <div class="p-4 bg-red-950/30 border border-red-500/40 rounded-lg space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-red-300 text-xs">CRITICAL PHISHING URL DETECTED</span>
+            <span class="badge badge-crit">PHISHING PROBABILITY: 94%</span>
+          </div>
+          <p class="text-xs text-slate-200">Target URL: <code class="text-cyan-400">https://auth-secure-update.xyz/login/verify</code></p>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs pt-1">
+            <div class="p-2 bg-slate-900 rounded">SPF: <span class="text-red-400 font-bold">FAIL</span></div>
+            <div class="p-2 bg-slate-900 rounded">DKIM: <span class="text-red-400 font-bold">FAIL</span></div>
+            <div class="p-2 bg-slate-900 rounded">DMARC: <span class="text-red-400 font-bold">REJECT</span></div>
+            <div class="p-2 bg-slate-900 rounded">Domain Age: <span class="text-amber-400 font-bold">12 Days</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 8: RANSOMWARE DEFENSE -->
+    <section id="panel-ransomware" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <span>🛑</span> Ransomware Behavioral Detection & Endpoint Isolation
+          </h2>
+          <span class="badge badge-crit pulse-badge">HOST ISOLATED</span>
+        </div>
+        <div class="p-4 bg-red-950/20 border border-red-500/30 rounded-lg space-y-2 text-xs">
+          <div class="font-bold text-white">Process: <code class="text-red-400">cryptolocker.exe (PID 2048)</code> on <code class="text-cyan-400">workstation-09.corp</code></div>
+          <p class="text-slate-300">Telemetry: Modified <strong>1,284 files in 45 seconds</strong> &bull; Entropy Score: <strong>7.9 (High Cryptographic Uniformity)</strong></p>
+          <div class="p-2.5 bg-black/40 rounded text-emerald-400 font-mono text-[11px]">
+            [AUTOMATED RESPONSE] Endpoint network adapter disabled. ARP spoofing / lateral SMB communication arrested.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 9: AI SECURITY ANALYST & ATTACK TIMELINE -->
+    <section id="panel-ai" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- ATTACK TIMELINE (Signature Feature) -->
+        <div class="glass-card p-5 lg:col-span-1 space-y-4">
+          <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>⏱️</span> Multi-Vector Attack Timeline
+            </h3>
+            <span class="badge badge-crit text-[9px]">CORRELATED CHAIN</span>
+          </div>
+
+          <div id="ai-timeline-container" class="space-y-1 py-2">
+            <!-- Populated -->
+          </div>
+        </div>
+
+        <!-- AI DOSSIER & PLAYBOOK -->
+        <div class="glass-card p-5 lg:col-span-2 space-y-5">
+          <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>📋</span> AI Incident Response Dossier
+            </h3>
+            <span id="ai-verdict-badge" class="badge badge-crit">CRITICAL ASSESSED</span>
+          </div>
+
+          <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+            <span class="text-xs uppercase font-bold text-slate-400">Executive Summary</span>
+            <p id="ai-summary" class="text-xs text-slate-200 leading-relaxed"></p>
+          </div>
+
+          <div>
+            <span class="text-xs uppercase font-bold text-slate-400 block mb-2">MITRE ATT&CK Matrix Mapping</span>
+            <div id="ai-mitre-box" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-3 bg-red-950/20 border border-red-500/30 rounded-lg space-y-2">
+              <span class="text-xs font-bold text-red-400">🛑 Immediate Containment Actions</span>
+              <ul id="ai-containment" class="text-xs text-slate-300 space-y-1.5 list-disc list-inside"></ul>
+            </div>
+            <div class="p-3 bg-cyan-950/20 border border-cyan-500/30 rounded-lg space-y-2">
+              <span class="text-xs font-bold text-cyan-400">🛡️ Long-Term Hardening Playbook</span>
+              <ul id="ai-remediation" class="text-xs text-slate-300 space-y-1.5 list-disc list-inside"></ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-slate-950/50 py-3 text-center text-xs text-slate-500">
+    CYBERFUSION X v3.0.0 &bull; Unified Enterprise Cyber Defense Platform &bull; Strictly for Authorized Defensive Operations
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
