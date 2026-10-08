@@ -1,20 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Database & Runtime Data
+*.db
+*.sqlite
+*.sqlite3
+cybershield/data/*.db
+
+# Reports & Outputs
+reports/
+
 # Binaries
 gobounty
 gobounty.exe
 *.exe
 
-# Reports generated at runtime
-reports/
-
-# Go build cache
-*.test
-*.out
-
-# Environment / secrets — NEVER commit these
+# Environment & Secrets
 .env
 *.env
 
 # IDE
 .vscode/
 .idea/
-

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBERSHIELD X — AI-Assisted SOC & Attack Surface Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; }
+    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP APP NAV -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">CYBERSHIELD X</h1>
+            <span class="badge badge-critical pulse-badge text-[10px]">DEFCON 2</span>
+          </div>
+          <p class="text-xs text-slate-400">Autonomous AI SecOps & SIEM / ASM Command Platform</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-3">
+        <button id="btn-seed" onclick="seedDemoData()" class="btn btn-secondary text-xs">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Seed Demo Telemetry
+        </button>
+        <button id="btn-simulate" onclick="simulateAttackKillchain()" class="btn btn-danger text-xs">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Simulate Attack Kill-Chain
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+
+    <!-- METRICS RIBBON (Matches User Plane) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass-card metric-box metric-cyan">
+        <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Discovered Assets</span>
+        <div class="flex items-baseline justify-between mt-2">
+          <span id="metric-assets" class="text-3xl font-extrabold text-white">1,248</span>
+          <span class="text-xs text-cyan-400 font-mono">+14 subdomains</span>
+        </div>
+      </div>
+
+      <div class="glass-card metric-box metric-critical">
+        <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Critical Vulnerabilities</span>
+        <div class="flex items-baseline justify-between mt-2">
+          <span id="metric-critical" class="text-3xl font-extrabold text-red-500">12</span>
+          <span class="badge badge-critical text-[10px]">Action Req.</span>
+        </div>
+      </div>
+
+      <div class="glass-card metric-box metric-high">
+        <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Active SIEM Alerts</span>
+        <div class="flex items-baseline justify-between mt-2">
+          <span id="metric-alerts" class="text-3xl font-extrabold text-amber-400">347</span>
+          <span class="text-xs text-amber-400 font-mono">Live stream</span>
+        </div>
+      </div>
+
+      <div class="glass-card metric-box metric-green">
+        <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Org Risk Score</span>
+        <div class="flex items-baseline justify-between mt-2">
+          <div class="flex items-baseline gap-1">
+            <span id="metric-risk" class="text-3xl font-extrabold text-cyan-300">76</span>
+            <span class="text-xs text-slate-400 font-mono">/100</span>
+          </div>
+          <span class="badge badge-high text-[10px]">Elevated</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <div class="flex border-b border-slate-800 gap-2 overflow-x-auto pb-1 text-sm font-medium">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2 border-b-2 border-cyan-400 text-cyan-400 font-semibold flex items-center gap-2">
+        <span>📊</span> Executive Dashboard
+      </button>
+      <button onclick="switchTab('asm')" id="tab-asm" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+        <span>🌐</span> Attack Surface Management
+      </button>
+      <button onclick="switchTab('vulns')" id="tab-vulns" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+        <span>🛡️</span> Vulnerability Management
+      </button>
+      <button onclick="switchTab('siem')" id="tab-siem" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+        <span>🚨</span> SIEM / SOC Telemetry
+      </button>
+      <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+        <span>🧠</span> AI Security Analyst & Timeline
+      </button>
+    </div>
+
+    <!-- TAB 1: EXECUTIVE DASHBOARD -->
+    <section id="panel-overview" class="tab-panel space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Risk Overview Breakdown -->
+        <div class="glass-card p-5 lg:col-span-1 space-y-4">
+          <h2 class="text-base font-bold text-white flex items-center justify-between">
+            <span>Security Risk Overview</span>
+            <span class="text-xs text-slate-400 font-mono">CVSS Weighted</span>
+          </h2>
+          
+          <div class="space-y-3 pt-2">
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1">
+                <span class="text-red-400">Critical</span>
+                <span id="bar-crit-num" class="font-mono text-slate-300">12</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2">
+                <div id="bar-crit" class="bg-red-500 h-2 rounded-full" style="width: 75%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1">
+                <span class="text-amber-400">High</span>
+                <span id="bar-high-num" class="font-mono text-slate-300">28</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2">
+                <div id="bar-high" class="bg-amber-500 h-2 rounded-full" style="width: 55%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1">
+                <span class="text-yellow-400">Medium</span>
+                <span id="bar-med-num" class="font-mono text-slate-300">45</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2">
+                <div id="bar-med" class="bg-yellow-400 h-2 rounded-full" style="width: 40%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1">
+                <span class="text-sky-400">Low / Informational</span>
+                <span id="bar-low-num" class="font-mono text-slate-300">18</span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2">
+                <div id="bar-low" class="bg-sky-400 h-2 rounded-full" style="width: 25%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800/80">
+            <div class="text-xs text-slate-400 mb-2">SOC Threat Posture</div>
+            <div class="p-3 bg-red-950/30 border border-red-500/30 rounded-lg flex items-center gap-3">
+              <span class="text-2xl">⚠️</span>
+              <div class="text-xs">
+                <p class="font-bold text-red-300">Active SSH Brute Force Campaign</p>
+                <p class="text-slate-400">Targeting root accounts across perimeter servers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Incidents Feed -->
+        <div class="glass-card p-5 lg:col-span-2 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-white">Recent Security Incidents</h2>
+            <button onclick="switchTab('ai')" class="text-xs text-cyan-400 hover:underline">Investigate in AI Console &rarr;</button>
+          </div>
+
+          <div id="incident-feed-list" class="space-y-3">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Architecture Flow Banner -->
+      <div class="glass-card p-5">
+        <h3 class="text-sm font-bold text-slate-300 mb-3 flex items-center gap-2">
+          <span>⚡</span> CYBERSHIELD X Unified Pipeline
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+          <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">1. Attack Surface</span>
+            <p class="text-slate-400">Subdomain discovery, DNS maps, exposed ports, TLS audit, and tech fingerprinting.</p>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
+            <span class="text-amber-400 font-bold block mb-1">2. Vulnerability Management</span>
+            <p class="text-slate-400">OWASP Top 10, Nuclei templates, Nmap services normalized into unified finding DB.</p>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
+            <span class="text-red-400 font-bold block mb-1">3. SIEM / SOC Telemetry</span>
+            <p class="text-slate-400">Ingestion from Linux, Windows, Wazuh, Syslog, Web with multi-stage attack correlation.</p>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
+            <span class="text-emerald-400 font-bold block mb-1">4. AI Security Analyst</span>
+            <p class="text-slate-400">Automated attack timeline reconstruction, MITRE ATT&CK mapping, and remediation playbooks.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: ATTACK SURFACE MANAGEMENT -->
+    <section id="panel-asm" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <span>🌐</span> Attack Surface Discovery Engine
+        </h2>
+        
+        <div class="flex flex-col md:flex-row gap-3">
+          <div class="flex-1 relative">
+            <input id="asm-target-input" type="text" value="example.com" placeholder="Enter authorized target (e.g. example.com or httpbin.org)"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400 font-mono">
+            <span id="scope-status-badge" class="absolute right-3 top-2.5 badge badge-info text-[10px]">Scope Unchecked</span>
+          </div>
+          <button onclick="checkScopeAction()" class="btn btn-secondary text-xs">Verify Scope</button>
+          <button id="btn-asm-scan" onclick="triggerAsmScan()" class="btn btn-primary text-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Discover Surface
+          </button>
+        </div>
+
+        <div id="asm-scan-spinner" class="hidden text-xs text-cyan-400 flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
+          Probing DNS, subdomains, open ports, TLS certificates and security headers...
+        </div>
+      </div>
+
+      <!-- Discovered Assets Table -->
+      <div class="glass-card overflow-hidden">
+        <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+          <h3 class="text-sm font-bold text-white">Discovered Assets & Services</h3>
+          <span id="asset-count-tag" class="text-xs text-slate-400 font-mono">0 Assets</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Domain / Host</th>
+                <th>IP Addresses</th>
+                <th>Open Ports</th>
+                <th>Technologies</th>
+                <th>TLS / Certificate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="assets-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: VULNERABILITY MANAGEMENT -->
+    <section id="panel-vulns" class="tab-panel hidden space-y-6">
+      <div class="glass-card p-5 space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <span>🛡️</span> Normalized Vulnerability Intelligence Database
+            </h2>
+            <p class="text-xs text-slate-400">Findings normalized from Nuclei, Nmap, OWASP, and Custom checks.</p>
+          </div>
+          <!-- Filter buttons -->
+          <div class="flex gap-2">
+            <button onclick="filterVulns('ALL')" class="btn btn-secondary text-xs">All</button>
+            <button onclick="filterVulns('CRITICAL')" class="btn btn-secondary text-xs text-red-400">Critical</button>
+            <button onclick="filterVulns('HIGH')" class="btn btn-secondary text-xs text-amber-400">High</button>
+            <button onclick="filterVulns('MEDIUM')" class="btn btn-secondary text-xs text-yellow-400">Medium</button>
+          </div>
+        </div>
+
+        <!-- Vulnerabilities List -->
+        <div id="vulns-container" class="space-y-3">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: REAL SOC / SIEM MODULE -->
+    <section id="panel-siem" class="tab-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Log Ingestion Form & Simulator -->
+        <div class="glass-card p-5 space-y-4 lg:col-span-1">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>🚨</span> Log Ingestion Simulator
+          </h2>
+          <p class="text-xs text-slate-400">Inject authorized security events to test SIEM correlation rules in real time.</p>
+
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs text-slate-400 font-semibold block mb-1">Source Format</label>
+              <select id="siem-source-type" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                <option value="linux">Linux auth.log / sshd</option>
+                <option value="windows">Windows EventLog (4625/4624)</option>
+                <option value="web">Nginx / Web Access Log</option>
+                <option value="wazuh">Wazuh JSON Alert</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-400 font-semibold block mb-1">Preset Scenarios</label>
+              <div class="grid grid-cols-1 gap-2">
+                <button onclick="injectLogPreset('failed_ssh')" class="text-left text-xs p-2 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 text-slate-300">
+                  🔴 SSH Failed Password (Brute force)
+                </button>
+                <button onclick="injectLogPreset('success_ssh')" class="text-left text-xs p-2 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 text-slate-300">
+                  🟢 SSH Accepted Password (Compromise)
+                </button>
+                <button onclick="injectLogPreset('sudo_priv')" class="text-left text-xs p-2 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 text-slate-300">
+                  ⚡ Sudo Privilege Escalation
+                </button>
+                <button onclick="injectLogPreset('sqli_probe')" class="text-left text-xs p-2 bg-slate-900 hover:bg-slate-800 rounded border border-slate-700 text-slate-300">
+                  💉 Web SQL Injection Attempt
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-400 font-semibold block mb-1">Raw Telemetry Message</label>
+              <textarea id="siem-raw-input" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white font-mono focus:border-cyan-400 focus:outline-none"
+                placeholder="sshd[4102]: Failed password for root from 185.220.101.5 port 42818 ssh2"></textarea>
+            </div>
+
+            <button onclick="submitSiemLog()" class="btn btn-primary w-full text-xs justify-center">
+              Ingest & Correlate Event
+            </button>
+          </div>
+        </div>
+
+        <!-- Live SIEM Logs & Alerts Stream -->
+        <div class="glass-card p-5 space-y-4 lg:col-span-2">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+              Live SIEM Log Stream & Correlation Alerts
+            </h2>
+            <button onclick="fetchSiemData()" class="text-xs text-cyan-400 hover:underline">Refresh</button>
+          </div>
+
+          <!-- Alert feed banner -->
+          <div id="siem-alerts-stream" class="space-y-2">
+            <!-- Dynamic alerts -->
+          </div>
+
+          <!-- Terminal Log window -->
+          <div class="space-y-1">
+            <span class="text-xs text-slate-400 font-mono uppercase">Raw Event Telemetry</span>
+            <div id="siem-logs-terminal" class="code-block h-64 overflow-y-auto space-y-1 text-xs">
+              <!-- Logs stream -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: AI SECURITY ANALYST -->
+    <section id="panel-ai" class="tab-panel hidden space-y-6">
+      
+      <!-- Top Investigation Header -->
+      <div class="glass-card p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <span>🧠</span> Autonomous AI Security Analyst
+            </h2>
+            <span class="badge badge-critical text-[10px]">Tier-3 Response Engine</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Cross-correlates Attack Surface, Ingested Logs, and Vuln DB to produce high-fidelity attack chains.</p>
+        </div>
+
+        <button onclick="runAiInvestigation()" class="btn btn-primary text-xs">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Re-Analyze Latest Incident
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- ATTACK TIMELINE (The signature feature!) -->
+        <div class="glass-card p-5 lg:col-span-1 space-y-4">
+          <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>⏱️</span> Attack Timeline
+            </h3>
+            <span class="text-xs text-cyan-400 font-mono">Sequential Kill-Chain</span>
+          </div>
+
+          <div id="attack-timeline-container" class="space-y-1 py-2">
+            <!-- Dynamically populated timeline steps -->
+          </div>
+        </div>
+
+        <!-- AI DOSSIER & REMEDIATION -->
+        <div class="glass-card p-5 lg:col-span-2 space-y-5">
+          <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <span>📋</span> Incident Response Dossier
+            </h3>
+            <span id="ai-severity-badge" class="badge badge-critical">CRITICAL ASSESSED</span>
+          </div>
+
+          <!-- Executive Summary -->
+          <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+            <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Executive Summary</span>
+            <p id="ai-incident-summary" class="text-xs text-slate-200 leading-relaxed">
+              Target host 'server-01.example.com' was subjected to an automated credential brute-force campaign originating from untrusted source IP '185.220.101.5', followed by anomalous interactive session activity.
+            </p>
+          </div>
+
+          <!-- Root cause and Potential Attack -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
+              <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Potential Attack Vector</span>
+              <p id="ai-potential-attack" class="text-xs font-semibold text-amber-300 mt-1">SSH Brute Force with Compromise</p>
+            </div>
+            <div class="p-3 bg-slate-900/50 rounded-lg border border-slate-800">
+              <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Root Cause Analysis</span>
+              <p id="ai-root-cause" class="text-xs text-slate-300 mt-1">Exposed Port 22 SSH lacking IP whitelisting or fail2ban rate controls.</p>
+            </div>
+          </div>
+
+          <!-- MITRE ATT&CK Matrix Tagging -->
+          <div>
+            <span class="text-xs uppercase font-bold text-slate-400 tracking-wider block mb-2">MITRE ATT&CK Mapping</span>
+            <div id="ai-mitre-tags" class="flex flex-wrap gap-2">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Actions & Playbooks -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-3 bg-red-950/20 border border-red-500/30 rounded-lg space-y-2">
+              <span class="text-xs font-bold text-red-400 flex items-center gap-1">
+                <span>🛑</span> Immediate Containment Actions
+              </span>
+              <ul id="ai-containment-list" class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+                <!-- Rendered -->
+              </ul>
+            </div>
+
+            <div class="p-3 bg-cyan-950/20 border border-cyan-500/30 rounded-lg space-y-2">
+              <span class="text-xs font-bold text-cyan-400 flex items-center gap-1">
+                <span>🛡️</span> Eradication & Long-Term Hardening
+              </span>
+              <ul id="ai-remediation-list" class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+                <!-- Rendered -->
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-slate-950/50 py-3 text-center text-xs text-slate-500">
+    CYBERSHIELD X v2.0.0 &bull; Autonomous Security Operations &bull; Strictly for Authorized Enterprise Testing
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
